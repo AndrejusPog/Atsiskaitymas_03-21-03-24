@@ -16,6 +16,7 @@ class Group(db.Model):
     __tablename__ = 'group'
     id = db.Column(db.Integer, primary_key=True)
     groupname = db.Column("groupname", db.String)
+    bill = db.relationship("Bill")
     
     
 class Bill(db.Model):
@@ -23,6 +24,8 @@ class Bill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column("description", db.String)
     amount = db.Column("amount", db.Integer)
+    group_id = db.Column(db.Integer, db.ForeignKey("group.id"))
+    group = db.relationship("Group")
 
     
 # Schema
