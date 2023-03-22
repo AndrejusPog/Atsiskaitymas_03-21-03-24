@@ -16,7 +16,15 @@ class Group(db.Model):
     __tablename__ = 'group'
     id = db.Column(db.Integer, primary_key=True)
     groupname = db.Column("groupname", db.String)
+    
+    
+class Bill(db.Model):
+    __tablename__ = 'bill'
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column("description", db.String)
+    amount = db.Column("amount", db.Integer)
 
+    
 # Schema
 class GroupSchema(ma.Schema):
     class Meta:
@@ -24,6 +32,14 @@ class GroupSchema(ma.Schema):
 
 group_schema = GroupSchema()
 groups_schema = GroupSchema(many=True)
+
+
+class BillSchema(ma.Schema):
+    class Meta:
+        fields = ('description', 'amount')
+
+bill_schema = BillSchema()
+bill_schema = BillSchema(many=True)
 
 
 # Crud
