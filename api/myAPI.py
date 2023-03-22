@@ -23,7 +23,6 @@ class Bill(db.Model):
     __tablename__ = 'bill'
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column("description", db.String)
-    amount = db.Column("amount", db.Integer)
     group_id = db.Column(db.Integer, db.ForeignKey("group.id"))
     group = db.relationship("Group")
 
@@ -37,13 +36,6 @@ group_schema = GroupSchema()
 groups_schema = GroupSchema(many=True)
 
 
-class BillSchema(ma.Schema):
-    class Meta:
-        fields = ('description', 'amount')
-
-bill_schema = BillSchema()
-bill_schema = BillSchema(many=True)
-
 
 # Crud
 @app.route('/group', methods=['POST'])
@@ -54,6 +46,7 @@ def add_group():
     db.session.add(new_group)
     db.session.commit()
     return group_schema.jsonify(new_group)
+
 
 # cRud
 @app.route('/group', methods=['GET'])
