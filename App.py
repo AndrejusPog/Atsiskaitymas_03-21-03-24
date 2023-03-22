@@ -60,7 +60,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('index'))
+            return redirect(next_page) if next_page else redirect(url_for('groups'))
         else:
             flash('Please check your email and password')
     return render_template("login.html", form=form)
@@ -75,6 +75,12 @@ def logout():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/groups")
+def groups():
+    if current_user.is_anonymous:
+        return redirect(url_for('index'))
+    return render_template("groups.html")
 
 
 if __name__ == '__main__':
