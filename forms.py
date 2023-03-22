@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, BooleanField, StringField, PasswordField, FloatField
+from wtforms import SubmitField, BooleanField, StringField, PasswordField, FloatField, IntegerField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 import app
 
@@ -26,7 +26,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
-class PrekeForm(FlaskForm):
-    description = StringField('Description', [DataRequired()])
-    amount = FloatField('Amount', [DataRequired()])
-    submit = SubmitField('Add bill')
+class GroupForm(FlaskForm):
+    groupname = StringField('Group name', [DataRequired()])
+    submit = SubmitField('Add')

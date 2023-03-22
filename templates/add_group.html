@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form method="post" action="#">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.groupname.label(class="form-control-label") }}
+        {{ form.groupname(class="form-control") }}
+    </div>
+    {{ form.submit }}
+</form>
+{% endblock %}

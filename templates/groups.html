@@ -1,5 +1,15 @@
-{% extends "index.html" %} 
+{% extends "index.html" %}
 
 {% block content %}
-<h1> This is a groups html</h1>
-{% endblock content %}
+
+{% if groups_list %}
+{% for group in groups_list %}
+<hr>
+<p>{{group.id}}</p>
+<p>{{group.groupname}}</p>
+{% endfor %}
+{% endif %}
+<hr>
+<p><a href="{{ url_for('new_group')}}">Add group</a></p>
+
+{% endblock %}

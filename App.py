@@ -1,8 +1,10 @@
 import os
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, UserMixin, current_user, logout_user, login_user, login_required
+from flask_login import LoginManager, UserMixin, current_user, logout_user, login_user
 from flask_sqlalchemy import SQLAlchemy
+import requests
+import json
 
 import forms
 
@@ -32,6 +34,12 @@ class User(db.Model, UserMixin):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -60,7 +68,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('groups'))
+            return redirect(next_page) if next_page else redirect(url_for('get_all_groups'))
         else:
             flash('Please check your email and password')
     return render_template("login.html", form=form)
@@ -72,17 +80,31 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
 
-@app.route("/groups")
-def groups():
+
+@app.route('/groups', methods=['GET'])
+def get_all_groups():
+    r = requests.get('http://127.0.0.1:8000/group')
+    groups_list = json.loads(r.text)
+    print(groups_list)
     if current_user.is_anonymous:
         return redirect(url_for('index'))
-    return render_template("groups.html")
+    return render_template("groups.html", groups_list=groups_list)
+
+@app.route("/add_group", methods=["GET", "POST"])
+def new_group():
+    if current_user.is_anonymous:
+        return redirect(url_for('index'))
+    forma = forms.GroupForm()
+    if forma.validate_on_submit():
+        group = {
+            "groupname": forma.groupname.data,
+        }
+        r = requests.post('http://127.0.0.1:8000/group', json=group)
+        return redirect(url_for('get_all_groups'))
+    return render_template("add_group.html", form=forma)
 
 
 if __name__ == '__main__':
     db.create_all()
-    app.run(host='127.0.0.1', port=8000, debug=True)
+    app.run(host='127.0.0.1', port=8001, debug=True)
