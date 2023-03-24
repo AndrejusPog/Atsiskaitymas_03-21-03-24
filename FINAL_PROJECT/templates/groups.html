@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>Groups</h1>
+{% if groups %}
+{% for group in groups %}
+<hr>
+<P><b>Group name :</b> {{group.name}}</p>
+<P><b>Group ID :</b> {{group.id}}</p>
+<a href="{{ url_for('edit_group', id=group['id']) }}">Edit group name</a><br>
+<a href="{{ url_for('delete_group', id=group['id']) }}">Delete group</a><br>
+<a href="{{ url_for('edit_bill', id=group['id']) }}">Edit bill</a><br>
+{% endfor %}
+{% endif %}
+<hr>
+<p><a href="{{ url_for('add_group')}}">Create a group</a></p>
+<form method="post" action="#">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.id.label(class="form-control-label") }}
+        {{ form.id(class="form-control") }}
+    </div>
+    {{ form.submit }}
+</form>
+{% endblock %}

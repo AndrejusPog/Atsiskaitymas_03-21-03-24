@@ -80,8 +80,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
 @app.route('/groups', methods=['GET'])
 def get_all_groups():
     r = requests.get('http://127.0.0.1:8000/group')
