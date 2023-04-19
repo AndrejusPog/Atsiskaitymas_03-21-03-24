@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>Bills</h1>
+{% if bills %}
+{% for myBill in bills %}
+<hr>
+{% if myBill.grouprelation %}
+<p><b>Group name:</b> {{myBill.grouprelation.name}}</p>
+<p><b>Group id:</b> {{myBill.grouprelation.id}}</p>
+<p><b>Bill:</b> <br> <b>Description:</b> {{myBill.description}} <br> <b>Amount $: </b>{{myBill.amount}}</p>
+{% endif %}
+<a href="{{ url_for('edit_bill', id=myBill['id']) }}">Edit bill</a><br>
+<a href="{{ url_for('delete_bill', id=myBill['id']) }}">Delete bill</a>
+{% endfor %}
+{% endif %}
+<hr>
+<p><a href="{{ url_for('add_bill')}}">Add bill</a></p>
+
+{% endblock %}
